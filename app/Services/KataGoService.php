@@ -45,7 +45,13 @@ class KataGoService
             2 => ['pipe', 'w'], // stderr
         ];
 
-        $this->process = proc_open($command, $descriptors, $this->pipes);
+        $env = [
+            'PATH' => '/usr/local/bin:/usr/bin:/bin',
+            'HOME' => '/tmp',
+            'USER' => 'www-data',
+        ];
+
+        $this->process = proc_open($command, $descriptors, $this->pipes, null, $env);
 
         if (! is_resource($this->process)) {
             // Clean up any pipes that may have been created
@@ -63,7 +69,7 @@ class KataGoService
         stream_set_blocking($this->pipes[2], false);
 
         // Wait for KataGo to initialize
-        usleep(100000); // 100ms - KataGo initializes fast enough
+        usleep(3000000); // 3 seconds - Human SL model needs more time
 
         // Read any initial output to clear buffers
         $this->readOutput();

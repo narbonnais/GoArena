@@ -40,7 +40,7 @@ return new class extends Migration
 
         DB::table('go_games')->update([
             'game_type' => 'bot',
-            'status' => DB::raw("CASE WHEN is_finished = 1 THEN 'finished' ELSE 'active' END"),
+            'status' => DB::raw("CASE WHEN is_finished = true THEN 'finished' ELSE 'active' END"),
             'black_player_id' => DB::raw('user_id'),
         ]);
 
